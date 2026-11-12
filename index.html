@@ -82,7 +82,7 @@
   h2 { font-size:32px; margin-bottom:8px; }
   .sub { color:var(--muted); margin-bottom:34px; }
 
-  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:22px; }
+  .grid { align-items:start; display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:22px; }
   .card { position:relative; background:var(--panel); backdrop-filter:blur(10px); border:1px solid var(--line); padding:30px 26px; clip-path:polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px)); transition:.3s; }
   .card::before { content:""; position:absolute; left:0; top:0; width:100%; height:2px; background:linear-gradient(90deg, var(--cyan), var(--pink)); transform:scaleX(0); transform-origin:left; transition:.35s; }
   .card:hover { transform:translateY(-6px); background:rgba(20,30,58,.85); box-shadow:0 0 40px rgba(0,229,255,.18); }
@@ -91,6 +91,19 @@
   .card .icon { font-size:40px; margin:10px 0; filter:drop-shadow(0 0 12px rgba(0,229,255,.6)); }
   .card h3 { font-size:21px; margin-bottom:6px; }
   .card p { color:var(--muted); font-size:15px; }
+  .card { cursor:pointer; }
+  .card:focus-visible { outline:2px solid var(--yellow); outline-offset:3px; }
+  .card .hint { display:block; margin-top:16px; font-family:var(--mono); font-size:12px; letter-spacing:2px; color:var(--yellow); }
+  .card .hint::before { content:"+ "; }
+  .card.open .hint::before { content:"− "; }
+  .card .more { max-height:0; overflow:hidden; opacity:0; transition:max-height .4s ease, opacity .3s ease, margin-top .3s ease; }
+  .card.open .more { max-height:320px; opacity:1; margin-top:16px; }
+  .card.open { background:rgba(20,30,58,.9); box-shadow:0 0 40px rgba(0,229,255,.2); }
+  .card.open::before { transform:scaleX(1); }
+  .card .more ul { list-style:none; border-top:1px solid var(--line); padding-top:14px; }
+  .card .more li { display:flex; justify-content:space-between; gap:14px; font-size:14px; padding:5px 0; color:var(--text); }
+  .card .more li span { font-family:var(--mono); font-size:12px; letter-spacing:1px; color:var(--cyan); text-transform:uppercase; white-space:nowrap; }
+  .card .more li b { font-weight:500; text-align:right; }
 
   .panel { background:var(--panel); backdrop-filter:blur(10px); border:1px solid var(--line); border-left:2px solid var(--pink); padding:36px 30px; }
   .panel p.txt { max-width:680px; color:var(--muted); }
@@ -134,23 +147,50 @@
     <h2>Οι μηχανές μας</h2>
     <p class="sub">Διάλεξε την κατηγορία που σου ταιριάζει.</p>
     <div class="grid">
-      <div class="card">
+      <div class="card" role="button" tabindex="0" aria-expanded="false">
         <div class="num">TYPE_01</div>
         <div class="icon">🏍️</div>
         <h3>Sport</h3>
         <p>Δύναμη και ταχύτητα για όσους αγαπούν την αδρεναλίνη.</p>
+        <span class="hint">Πληροφορίες</span>
+        <div class="more">
+          <ul>
+            <li><span>Κυβισμός</span><b>συνήθως 600–1000 cc</b></li>
+            <li><span>Ιδανική για</span><b>πίστα & ανοιχτό δρόμο</b></li>
+            <li><span>Θέση οδήγησης</span><b>σκυφτή, αεροδυναμική</b></li>
+            <li><span>Επίπεδο</span><b>έμπειροι αναβάτες</b></li>
+          </ul>
+        </div>
       </div>
-      <div class="card">
+      <div class="card" role="button" tabindex="0" aria-expanded="false">
         <div class="num">TYPE_02</div>
         <div class="icon">🛵</div>
         <h3>Scooter</h3>
         <p>Οικονομικά και ευέλικτα, ιδανικά για την πόλη.</p>
+        <span class="hint">Πληροφορίες</span>
+        <div class="more">
+          <ul>
+            <li><span>Κυβισμός</span><b>συνήθως 50–300 cc</b></li>
+            <li><span>Ιδανικό για</span><b>καθημερινή μετακίνηση</b></li>
+            <li><span>Κιβώτιο</span><b>αυτόματο</b></li>
+            <li><span>Επίπεδο</span><b>αρχάριοι & όλοι</b></li>
+          </ul>
+        </div>
       </div>
-      <div class="card">
+      <div class="card" role="button" tabindex="0" aria-expanded="false">
         <div class="num">TYPE_03</div>
         <div class="icon">⛰️</div>
         <h3>Enduro / On-Off</h3>
         <p>Για χώμα, βουνό και μεγάλα ταξίδια χωρίς όρια.</p>
+        <span class="hint">Πληροφορίες</span>
+        <div class="more">
+          <ul>
+            <li><span>Κυβισμός</span><b>συνήθως 250–1200 cc</b></li>
+            <li><span>Ιδανική για</span><b>χώμα & ταξίδια</b></li>
+            <li><span>Ανάρτηση</span><b>μεγάλη διαδρομή</b></li>
+            <li><span>Επίπεδο</span><b>μεσαίοι & έμπειροι</b></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -225,6 +265,19 @@
     if (spots.length) requestAnimationFrame(draw); else running = false;
   }
 })();
+</script>
+
+<script>
+document.querySelectorAll('.card').forEach(function (card) {
+  function toggle() {
+    var open = card.classList.toggle('open');
+    card.setAttribute('aria-expanded', open);
+  }
+  card.addEventListener('click', toggle);
+  card.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+  });
+});
 </script>
 
 </body>
